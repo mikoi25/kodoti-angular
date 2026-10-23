@@ -1,1 +1,195 @@
-<p>orders-new works!</p>
+<div class="container py-4">
+  <h2 class="mb-4">Nueva Orden</h2>
+
+
+
+  <!-- Formulario -->
+  <form [formGroup]="orderForm" class="row g-3">
+
+    <!-- Cliente -->
+    <div class="col-md-6">
+      <label class="form-label">Cliente</label>
+      <select
+        class="form-select"
+        formControlName="clientId"
+        (change)="changeClientId()"
+      >
+        <option value="" disabled>Seleccione cliente</option>
+           @if (customersRx.value(); as customers) {
+         <ng-container >
+           @for (c of customers.items; track c.clientId) {        
+          <option [value]="c.clientId">
+            {{ c.name }}
+          </option>
+        }
+        </ng-container>
+           }
+   
+      </select>
+        @if (orderForm.get('clientId')?.invalid && orderForm.get('clientId')?.touched) {
+      <div class="text-danger small">
+        Cliente es obligatorio
+      </div>
+    }
+    </div>
+
+    <!-- Método de Pago -->
+    <div class="col-md-6">
+      <label class="form-label">Método de Pago</label>
+      <select
+        class="form-select"
+        formControlName="paymentType"
+        (change)="changepaymentType()"
+      >
+        <option value="" disabled>Seleccione pago</option>
+       @for (pay of paymentType; track pay.id) {
+          <option [value]="pay.id">
+          {{ pay.desc }}
+        </option>
+       }
+      
+      </select>
+      @if(orderForm.get('paymentType')?.invalid && orderForm.get('paymentType')?.touched){
+             <div class="text-danger small">
+        Método de pago es obligatorio
+      </div>
+      }
+
+    </div>
+
+    <!-- Producto -->
+    <div class="col-md-8">
+      <label class="form-label">Producto</label>
+      <select class="form-select" formControlName="productId">
+        <option value="" disabled>Seleccione producto</option>
+        @if (productsRx.value(); as products) {
+            <ng-container>
+             @for (p of products.items; track p.productId) {        
+          <option
+       
+            [value]="p.productId"
+          >
+            {{ p.name }} - {{ p.price | currency:'USD' }}
+          </option>
+        }
+        </ng-container>
+        }
+     
+      </select>
+    </div>
+
+    <!-- Botón Agregar -->
+    <div class="col-md-2 d-flex align-items-end">
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        (click)="addItem()"
+        [disabled]="orderForm.get('productId')?.invalid"
+      >
+        Agregar Producto
+      </button>
+    </div>
+
+    <!-- Botón vaciar carro -->
+    <div class="col-md-2 d-flex align-items-end">
+      <button
+        type="button"
+        class="btn btn-danger w-100"
+        (click)="this.cartService.clearCart()"
+        [disabled]="!carrito().items.length"
+      >
+        Vaciar Carro
+      </button>
+    </div>
+  </form>
+
+  <hr class="my-4" />
+  <p>Total de Items: {{ this.cartService.itemCount() }}</p>
+
+
+  
+<table class="table mt-5 mb-3">
+  <thead>
+    <tr>
+      <th style="width: 30px"></th>
+      <th>Item</th>
+      <th style="width: 120px" class="text-right">Precio</th>
+      <th style="width: 120px" class="text-right">Cantidad</th>
+      <th style="width: 150px" class="text-right">SubTotal</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of cartService.pagination.paginatedItems(); track $index) {
+    <tr>
+      <td>
+        <button  class="btn btn-danger"  (click)="cartService.removeItem(item.productId)">X</button> 
+      </td>
+      <td>{{ "Product " + item.productId}}</td>
+      <td class="text-right">{{ item.unitPrice}}</td>
+
+      <td class="text-right">
+        <button class="menos" (click)="cartService.decreaseQuantity(item.productId)">-</button>
+            <span class="cantidad">{{item.quantity}}</span>
+          
+            <button class="mas"  (click)="cartService.increaseQuantity(item.productId)">+</button>
+      </td>
+
+      <td class="text-right">
+         {{item.unitPrice * item.quantity}}
+      </td>
+    </tr>
+
+  }
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4"></td>
+      <td class="text-right" style="font-size: 1.2em">
+        {{ total()}}
+      </td>
+    </tr>
+  </tfoot>
+</table>
+@if (this.cartService.stockError()) {
+<div  class="bg-red-100 text-red-800 p-2 rounded">
+  {{ this.cartService.stockError() }}
+</div>
+}@else {
+  
+}
+
+<div class="pagination-controls">
+  <button (click)="cartService.pagination.prevPage()" [disabled]="this.cartService.pagination.currentPage() === 1">
+    Anterior
+  </button>
+@for (page of cartService.pagination.pageNumbers(); track page) {
+  <button
+    (click)="cartService.pagination.goToPage(page)"
+    [class.active]="cartService.pagination.currentPage() === page">
+    {{ page }}
+  </button>
+}
+
+  <button (click)="cartService.pagination.nextPage()" [disabled]="cartService.pagination.currentPage() === cartService.pagination.totalPages()">
+    Siguiente
+  </button>
+</div>
+
+
+
+
+
+
+  <button
+      class="btn btn-success btn-lg"
+      (click)="save()"
+      [disabled]="!carrito().items.length"
+    >
+      Guardar Orden
+    </button>
+
+  @if (cartService.stockError()) {
+    <div  class="error-msg">
+    {{ cartService.stockError() }}
+  </div>
+  }

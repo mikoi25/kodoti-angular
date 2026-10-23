@@ -1,1 +1,68 @@
-<p>orders-list works!</p>
+  <div class="text-center">
+    <h1 class="display-4">Órdenes</h1>
+    <p>Todas las órdenes que ha registrado en el sistema</p>
+  </div>
+  
+  <div class="text-center mt-4 mb-4">
+    <a routerLink="/order/order-new" class="btn btn-primary text-light btn-lg">Crear nueva orden</a>
+  </div>
+
+ 
+
+ @if (orderResource.hasValue()) {
+
+ <button class="btn btn-primary mb-3" (click)="toggleSort()">
+    Ordenar por ID {{ sortAsc() ? '↓ Ascendente' : '↑ Descendente' }}
+  </button>
+<table class="table">
+    <thead>
+      <tr>
+        <th># Orden</th>
+        <th style="width:250px;">Cliente</th>
+        <th style="width:140px;">Tipo de pago</th>
+        <th style="width:100px;">Estado</th>
+        <th style="width:140px;" class="text-right">Total</th>
+        <th style="width:100px;"></th>
+      </tr>
+    </thead>
+    <tbody>      
+      @for (order of ordersSorted(); track $index) {
+        <tr>
+          <td>{{order.orderId}}</td>
+          <td>{{order.clientId | clientName}}</td>
+          <td>{{order.paymentType | paymentType}}</td>
+          <td>{{order.status!  | orderStatus}}</td>
+          <td>{{order.total}}</td>
+           <td><a [routerLink]="['/order/order-details',order.orderId]">Detalles</a></td>
+        </tr>  
+      }@if (orderResource.error()) {
+        <tr>
+          <td colspan="8" class="text-center">
+            {{ orderResource.error() }}
+          </td>
+        </tr>
+        }
+  
+        <!--  -->
+        @if(orderResource.value.length === 0 && !orderResource.isLoading()) {
+        <tr>
+          <td colspan="8" class="text-center">No se encontraron resultados</td>
+        </tr>
+        }
+  
+        <!--  -->
+        @if (orderResource.isLoading()) {
+        <tr>
+          <td colspan="8" class="text-center">Buscando orders</td>
+        </tr>
+  
+        }
+    </tbody>
+  </table>
+
+}
+ <shared-pagination
+  [pages]="orderResource.value()?.pages ?? 0"
+  [currentPage]="paginationService.currentPage()" /> 
+
+  

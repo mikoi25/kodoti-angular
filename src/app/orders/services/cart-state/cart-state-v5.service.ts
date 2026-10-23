@@ -1,8 +1,8 @@
 import { computed, effect, inject, Injectable, signal } from "@angular/core";
-import { CartStorageService } from "../storage/v1/storage.service";
-import { CartStockService } from "../cart-stock.service";
-import { PaginationService } from "../pagination/pagination.service";
-import { ProductItemCart } from "@orders/interface/product.interface.";
+import { CartStorageService } from "./storage.service";
+import { CartStockService } from "./cart-stock.service";
+import { PaginationService } from "./pagination.service";
+import { ProductItemCart } from "../../interfaces/product.interface.";
 
 @Injectable({providedIn: 'root'})
 export class CartService_V5 {

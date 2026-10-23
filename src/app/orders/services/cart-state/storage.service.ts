@@ -1,5 +1,5 @@
 import { effect, Injectable, signal } from '@angular/core';
-import { Carrito } from '@orders/interface/product.interface.';
+import { Carrito } from '../../interfaces/product.interface.';
 
 @Injectable({providedIn: 'root'})
 export class CartStorageService {

@@ -1,1 +1,33 @@
-<p>orders-details works!</p>
+<h1 class="display-4">{{ order()?.orderNumber }}</h1>
+<p>Información de la orden de compra</p>
+
+<p><b>Cliente</b>: {{ order()?.clientId }}</p>
+<p><b>Método de pago</b>: {{ order()?.paymentType  | paymentType }}</p>
+<p><b>Estado</b>:{{ order()?.status  | orderStatus }}</p>
+
+<table class="table table-hover mt-5">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th class="text-right">Precio</th>
+            <th class="text-right">Cantidad</th>
+            <th class="text-right">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (item of order()?.items; track $index) {
+        <tr>
+            <td>{{ item.productId }}</td>
+            <td style="width:100px;" class="text-right">{{ item.unitPrice}}</td>
+            <td style="width:100px;" class="text-right">{{ item.quantity }}</td>
+            <td style="width:140px;" class="text-right">{{ item.total }}</td>
+        </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3"></td>
+            <td class="text-right font-weight-bold" style="font-size:1.2em;">{{ order()?.total }}</td>
+        </tr>
+    </tfoot>
+</table>
