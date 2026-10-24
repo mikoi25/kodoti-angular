@@ -16,7 +16,7 @@ export class AuthLogin {
   hasError = signal(false);
   isPosting =signal(false);
   router = inject(Router);
-  // formUtils = FormUtils;
+  formUtils = FormUtils;
   authService = inject(authService);
 
   loginForm = this.fb.group({
@@ -27,7 +27,7 @@ export class AuthLogin {
     ],
     password:['',[Validators.required,Validators.minLength(6)]]
   });
-formUtils: any;
+
 
   onSubmit(){
     if(this.loginForm.invalid){
@@ -39,7 +39,8 @@ formUtils: any;
      }
 
     const { email = '', password= ''} = this.loginForm.value;
-
+     console.log('email ',email);
+     console.log('password', password);
      this.authService
          .authentication({Email:email!,Password:password!})
            .subscribe();

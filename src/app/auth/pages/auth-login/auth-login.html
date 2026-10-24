@@ -8,7 +8,7 @@
 
       <div class="mb-3">
           <input  type="email"  class="form-control" placeholder="E-mail"  formControlName="email">
-          @if ( formUtils.isValidField(loginForm, 'email')) {
+          @if ( formUtils.isValidField?.(loginForm, 'email')) {
             <span class="form-text text-danger">
               <!-- El valor ingresado no parece un correo electrónico -->
               {{ formUtils.getFieldError(loginForm, "email") }}
@@ -17,7 +17,7 @@
       </div>
       <div class="mb-3">
           <input type="password"  class="form-control" placeholder="Password" formControlName="password">
-          @if ( formUtils.isValidField(loginForm, 'password')) {
+          @if ( formUtils.isValidField?.(loginForm, 'password')) {
             <span class="form-text text-danger">
               <!-- El valor ingresado no parece un correo electrónico -->
               {{ formUtils.getFieldError(loginForm, "password") }}

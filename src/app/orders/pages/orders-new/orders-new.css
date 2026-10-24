@@ -1,0 +1,17 @@
+.pagination-controls {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.error-msg {
+  margin-top: 1rem;
+  padding: 10px;
+  border: 1px solid red;
+  background: #ffe6e6;
+  color: red;
+}

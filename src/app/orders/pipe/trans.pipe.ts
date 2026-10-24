@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { OrderPayment, OrderStatus } from '@orders/interface/order.interface';
+import { OrderPayment, OrderStatus } from '../interfaces/order.interface';
+
 
 @Pipe({ name: 'orderStatus' })
 export class OrderStatusPipe implements PipeTransform {
