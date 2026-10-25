@@ -1,33 +1,84 @@
-<h1 class="display-4">{{ order()?.orderNumber }}</h1>
-<p>Información de la orden de compra</p>
+<div class="page-head">
+  <div class="eyebrow mb-2">Gestión de orders</div>
+  <h1>💲 Lista de Detalles Orders</h1>
+</div>
 
-<p><b>Cliente</b>: {{ order()?.clientId }}</p>
-<p><b>Método de pago</b>: {{ order()?.paymentType  | paymentType }}</p>
-<p><b>Estado</b>:{{ order()?.status  | orderStatus }}</p>
+<div class="toolbar-top">
+  <a routerLink="/orders/list" class="btn-kodoti btn-teal">&larr; Volver a órdenes</a>
+</div>
 
-<table class="table table-hover mt-5">
-    <thead>
-        <tr>
-            <th>Item</th>
-            <th class="text-right">Precio</th>
-            <th class="text-right">Cantidad</th>
-            <th class="text-right">Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (item of order()?.items; track $index) {
-        <tr>
-            <td>{{ item.productId }}</td>
-            <td style="width:100px;" class="text-right">{{ item.unitPrice}}</td>
-            <td style="width:100px;" class="text-right">{{ item.quantity }}</td>
-            <td style="width:140px;" class="text-right">{{ item.total }}</td>
-        </tr>
+
+<!-- <div class="page-head">
+    <a class="back" routerLink="/orders/list">&larr; Volver a órdenes</a>
+</div> -->
+
+<div class="card-kodoti card-accent card-accent-pendiente">
+    <div class="panel-head panel-head-row">
+        <div>
+            <div class="eyebrow mb-1">Orden de compra</div>
+            <h2 class="mono mb-0" style="font-size:1.4rem;">2026-000001</h2>
+        </div>
+        <!-- <span class="badge-estado badge-pendiente">Pendiente</span> -->
+        @if(order()?.status === 0){
+        <span class="badge bg-danger">
+            Pendiente
+        </span>
+        }@if(order()?.status === 1){
+        <span class="badge bg-success">
+            Cancelado
+        </span>
+        }@if(order()?.status === 2){
+        <span class="badge bg-primay">
+            Cancelado
+        </span>
         }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3"></td>
-            <td class="text-right font-weight-bold" style="font-size:1.2em;">{{ order()?.total }}</td>
-        </tr>
-    </tfoot>
-</table>
+        </div>
+
+    <div class="panel-body">
+        <dl class="order-meta">
+            <div>
+                <dt>Cliente</dt>
+                <dd>{{ order()?.clientId }}</dd>
+            </div>
+            <div>
+                <dt>Método de pago</dt>
+                <dd>{{ order()?.paymentType}}</dd>
+            </div>
+            <div>
+                <dt>Fecha</dt>
+                <dd> 21/4/1995</dd>
+            </div>
+        </dl>
+
+        <div class="table-wrap">
+            <table class="table-kodoti">
+                <thead>
+                    <tr>
+                        <th>Ítem</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>SubTotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of order()?.items; track $index) {
+                    <tr>
+                        <td class="strong-cell">{{ item.productId}}</td>
+                        <td class="price-cell">{{ item.unitPrice }}</td>
+                        <td class="mono">{{ item.quantity }}</td>
+                        <td class="price-cell">{{ item.total}}</td>
+                    </tr>
+                    }
+
+
+                </tbody>
+                <tfoot>
+                    <tr class="ledger-total-row">
+                        <td colspan="3" class="text-end">Total general</td>
+                        <td class="total-value">{{order()?.total}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

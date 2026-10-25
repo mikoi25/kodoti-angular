@@ -1,21 +1,22 @@
-import { CurrencyPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { orderService } from '../../services/orders.service';
-import { Router } from '@angular/router';
+import { Component, computed, inject } from '@angular/core';
+import { ProductItemCart } from '../../interfaces/product.interface';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { forkJoin } from 'rxjs';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from '../../../utils/form-utils';
-import { ProductItemCart } from '../../interfaces/product.interface.';
-import { CartService_V5 } from '../../services/cart-state/cart-state-v5.service';
+import { orderService } from '../../services/order.service';
+import { Router } from '@angular/router';
+import { CartService_V5 } from '../../services/cart-state/v5/cart-state-v5.service';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
-  imports: [ReactiveFormsModule ,CurrencyPipe],
+  imports: [CurrencyPipe,ReactiveFormsModule],
   selector: 'app-orders-new',
   styleUrl: './orders-new.css',
   templateUrl: './orders-new.html',
 })
 export class OrdersNew {
-    private readonly deps ={
+private readonly deps ={
     orderSevice :inject(orderService),
     router :inject(Router),
     fb : inject(FormBuilder)
@@ -41,16 +42,41 @@ export class OrdersNew {
   ];
 
   // Resources
-  customersRx =rxResource({
+ private customersRx =rxResource({
     stream: () =>{
       return this.deps.orderSevice.GetAllCustomers();
     }
   })
-  productsRx =rxResource({
-    stream: () =>{
-      return this.deps.orderSevice.GetAllProducts();
-    }
+private  productsResource = rxResource({
+  stream: () =>
+    forkJoin({
+      products: this.deps.orderSevice.GetAllProducts(),
+      stocks: this.deps.orderSevice.GetAllStocks()
+    })
+});
+
+  productos = computed(() => this.productsResource.value()?.products.items ?? []);
+  productsWithStock = computed(() =>  {
+      const data = this.productsResource.value();
+      
+  if (!data) {
+    return [];
+  }
+    const stockMap =  new Map(
+      data.stocks.items.map(stock => [
+         stock.productId,
+         stock.stock
+      ])
+    );
+
+    return data.products.items
+       .map(product => ({
+         ...product,
+         stock: stockMap.get(product.productId) ?? 0
+       }))
+       .filter(prod =>prod.stock > 0);
   })
+  customers = computed(() => this.customersRx.value()?.items ?? []);
 
    // Métodos
   save() {
@@ -66,7 +92,9 @@ export class OrdersNew {
     });
   }
 addItem() {
-   const product = this.productsRx.value()?.items.find(p => p.productId == this.orderForm.value.productId!)!;
+
+  //  const product = this.productsRx.value()?.items.find(p => p.productId == this.orderForm.value.productId!)!;
+   const product = this.productos().find(item => item.productId == this.orderForm.value.productId);
 
    if(!product) return ;
    const productItemCart1:ProductItemCart = { productId:product.productId, unitPrice: product.price, quantity:1, }; 
@@ -78,4 +106,6 @@ addItem() {
   changeClientId(){
   this.cartService.setClient(Number(this.orderForm.value.clientId!));
   }
+
+ 
 }

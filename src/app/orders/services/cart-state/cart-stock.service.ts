@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
-import { orderService } from "../orders.service";
-import { ProductInStockItem } from "../../interfaces/product.interface.";
+import { orderService } from "../order.service";
+import { ProductInStockItem } from "../../interfaces/product.interface";
 
 
 @Injectable({providedIn: 'root'})

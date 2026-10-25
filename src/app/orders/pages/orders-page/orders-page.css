@@ -1,8 +1,11 @@
+  :host {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100vh;
+}
 
-.footer {
-  position: absolute;
-  bottom: 0;
+.container {
+  flex-grow: 1;
   width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
 }

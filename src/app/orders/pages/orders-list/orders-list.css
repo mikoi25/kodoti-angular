@@ -1,0 +1,9 @@
+.page-head{ padding:2.25rem 0 1.25rem; }
+.page-head h1{ font-size:1.9rem; font-weight:700; }
+.toolbar-top{ margin-bottom:1.5rem; }
+.table-wrap{ overflow-x:auto; }
+.footer-row{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:1.25rem; flex-wrap:wrap; gap:0.75rem;
+}
+.results-count{ font-family:'JetBrains Mono', monospace; font-size:0.8rem; color:var(--muted); }

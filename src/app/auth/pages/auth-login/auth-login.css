@@ -1,0 +1,51 @@
+  .login-page{
+    flex-grow:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+    padding:2rem 1rem;
+  }
+  .login-page .motif-a{
+    position:absolute; top:-70px; left:-70px;
+    width:320px; height:320px;
+    background:var(--teal-soft);
+    clip-path:polygon(0 0, 100% 0, 0 100%);
+  }
+  .login-page .motif-b{
+    position:absolute; bottom:-90px; right:-90px;
+    width:420px; height:420px;
+    background:var(--surface-2);
+    clip-path:polygon(100% 100%, 100% 0, 0 100%);
+  }
+  .login-card{
+    width:100%;
+    max-width:380px;
+    padding:2.4rem 2.2rem 2.2rem;
+    position:relative;
+    z-index:1;
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+  }
+  .login-brand{
+    display:flex; flex-direction:column; align-items:center; gap:0.6rem;
+    margin-bottom:1.8rem; padding-bottom:1.6rem;
+    border-bottom:1px solid var(--line);
+  }
+  .login-brand .kodoti-mark{ width:40px; height:40px; }
+  .login-brand .wordmark{ font-size:1.4rem; }
+  .login-brand .eyebrow{ margin-top:0.1rem; }
+  .login-card .btn-teal{ width:100%; margin-top:0.4rem; padding:0.7rem; }
+  .field{ margin-bottom:1.1rem; }
+  .module-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    padding:0.2rem 0.6rem;
+    border-radius:999px;
+    margin-top:0.3rem;
+  }

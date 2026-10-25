@@ -1,195 +1,128 @@
-<div class="container py-4">
-  <h2 class="mb-4">Nueva Orden</h2>
+<div class="container">
+  <div class="page-head">
+    <div class="eyebrow mb-2">Nueva orden</div>
+    <h1>Nueva Orden</h1>
+  </div>
 
+  <div class="card-kodoti p-3 p-md-4">
+ <form [formGroup]="orderForm" >
+    <div class="form-row">
+      <div class="field">
+        <label class="form-label-kodoti">Cliente</label>
+        <select class="form-select-kodoti" (change)="changeClientId()"    formControlName="clientId" >
+               <option selected  disabled>Seleccionar cliente</option>
+        
+              @if(customers()){
 
-
-  <!-- Formulario -->
-  <form [formGroup]="orderForm" class="row g-3">
-
-    <!-- Cliente -->
-    <div class="col-md-6">
-      <label class="form-label">Cliente</label>
-      <select
-        class="form-select"
-        formControlName="clientId"
-        (change)="changeClientId()"
-      >
-        <option value="" disabled>Seleccione cliente</option>
-           @if (customersRx.value(); as customers) {
-         <ng-container >
-           @for (c of customers.items; track c.clientId) {        
-          <option [value]="c.clientId">
-            {{ c.name }}
-          </option>
-        }
-        </ng-container>
-           }
-   
-      </select>
-        @if (orderForm.get('clientId')?.invalid && orderForm.get('clientId')?.touched) {
-      <div class="text-danger small">
-        Cliente es obligatorio
+                @for (item of  customers(); track $index) {
+                    <option [value]="item.clientId">
+                         Client {{ item.clientId }}
+                    </option>
+                }
+              }
+          
+        </select>
       </div>
-    }
-    </div>
-
-    <!-- Método de Pago -->
-    <div class="col-md-6">
-      <label class="form-label">Método de Pago</label>
-      <select
-        class="form-select"
-        formControlName="paymentType"
-        (change)="changepaymentType()"
-      >
-        <option value="" disabled>Seleccione pago</option>
-       @for (pay of paymentType; track pay.id) {
-          <option [value]="pay.id">
-          {{ pay.desc }}
-        </option>
-       }
-      
-      </select>
-      @if(orderForm.get('paymentType')?.invalid && orderForm.get('paymentType')?.touched){
-             <div class="text-danger small">
-        Método de pago es obligatorio
+      <div class="field">
+        <label class="form-label-kodoti">Método de pago</label>
+        <select class="form-select-kodoti" (change)="changepaymentType()" formControlName="paymentType">
+            
+            <option selected  disabled>Seleccionar metdo de pago</option>
+          @if (paymentType; as metodoDePago) {
+            @for (item of metodoDePago; track $index) {
+             <option [value]="item.id">{{ item.desc}}</option>
+            }
+          }
+        </select>
       </div>
-      }
-
     </div>
 
-    <!-- Producto -->
-    <div class="col-md-8">
-      <label class="form-label">Producto</label>
-      <select class="form-select" formControlName="productId">
-        <option value="" disabled>Seleccione producto</option>
-        @if (productsRx.value(); as products) {
-            <ng-container>
-             @for (p of products.items; track p.productId) {        
-          <option
-       
-            [value]="p.productId"
-          >
-            {{ p.name }} - {{ p.price | currency:'USD' }}
-          </option>
-        }
-        </ng-container>
-        }
-     
-      </select>
-    </div>
+    <div class="product-row">
+      <div class="field">
+        <label class="form-label-kodoti">Producto</label>
+        <select class="form-select-kodoti"  formControlName="productId">
+                   <option selected  disabled>Seleccionar productos</option>
+              @if (productsWithStock()) {
 
-    <!-- Botón Agregar -->
-    <div class="col-md-2 d-flex align-items-end">
-      <button
-        type="button"
-        class="btn btn-primary w-100"
-        (click)="addItem()"
-        [disabled]="orderForm.get('productId')?.invalid"
-      >
-        Agregar Producto
-      </button>
-    </div>
-
-    <!-- Botón vaciar carro -->
-    <div class="col-md-2 d-flex align-items-end">
-      <button
-        type="button"
-        class="btn btn-danger w-100"
+                @for (item of productsWithStock(); track $index) {
+                    <option [value]="item.productId">
+                          {{ item.name }} - {{ item.price | currency:'USD' }} - stock {{item.stock}} 
+                    </option>
+                }
+              }
+            
+        </select>
+      </div>
+      <div class="actions">
+        <button class="btn-kodoti btn-teal" (click)="addItem()">Agregar Producto</button>
+        <button class="btn-kodoti btn-brick" 
         (click)="this.cartService.clearCart()"
         [disabled]="!carrito().items.length"
-      >
-        Vaciar Carro
-      </button>
+        >Vaciar Carro</button>
+      </div>
     </div>
-  </form>
+</form>
+    <div class="items-count" id="itemsCount">Total de ítems:  {{ this.cartService.itemCount() }}</div>
 
-  <hr class="my-4" />
-  <p>Total de Items: {{ this.cartService.itemCount() }}</p>
-
-
-  
-<table class="table mt-5 mb-3">
-  <thead>
-    <tr>
-      <th style="width: 30px"></th>
-      <th>Item</th>
-      <th style="width: 120px" class="text-right">Precio</th>
-      <th style="width: 120px" class="text-right">Cantidad</th>
-      <th style="width: 150px" class="text-right">SubTotal</th>
+    <div class="table-wrap">
+      <table class="table-kodoti">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Item</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>SubTotal</th>
+          </tr>
+        </thead>
+        <tbody id="cartBody">
+          @if(!carrito().items.length){
+             <tr><td colspan="5" class="empty-cart">Aún no has agregado productos al carro.</td></tr>
+          }
+          @for (item of cartService.pagination.paginatedItems(); track $index) {
+                     <tr>
+            <td><button class="remove-btn" (click)="this.cartService.removeItem(item.productId)">×</button></td>
+            <td>Product {{item.productId}}</td>
+            <td class="price-cell">{{ item.unitPrice}}</td>
+            <td>
+              <div class="qty-stepper">
+                <button data-action="dec" (click)="this.cartService.decreaseQuantity(item.productId)">−</button>
+                <span class="qty-value">{{ item.quantity }}</span>
+                <button data-action="inc" (click)="this.cartService.increaseQuantity(item.productId)">+</button>
+              </div>
+            </td>
+            <td class="price-cell"> {{ item.unitPrice * item.quantity}}</td>
+          </tr>
+          }
+        </tbody>
+<tfoot>
+  @if (carrito().items.length) {
+    <tr class="table-total-row">
+      <td colspan="4" class="text-end">Total</td>
+      <td class="total-value">{{ total() | currency:'USD' }}</td>
     </tr>
-  </thead>
-  <tbody>
-    @for (item of cartService.pagination.paginatedItems(); track $index) {
-    <tr>
-      <td>
-        <button  class="btn btn-danger"  (click)="cartService.removeItem(item.productId)">X</button> 
-      </td>
-      <td>{{ "Product " + item.productId}}</td>
-      <td class="text-right">{{ item.unitPrice}}</td>
-
-      <td class="text-right">
-        <button class="menos" (click)="cartService.decreaseQuantity(item.productId)">-</button>
-            <span class="cantidad">{{item.quantity}}</span>
-          
-            <button class="mas"  (click)="cartService.increaseQuantity(item.productId)">+</button>
-      </td>
-
-      <td class="text-right">
-         {{item.unitPrice * item.quantity}}
-      </td>
-    </tr>
-
   }
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="4"></td>
-      <td class="text-right" style="font-size: 1.2em">
-        {{ total()}}
-      </td>
-    </tr>
-  </tfoot>
-</table>
-@if (this.cartService.stockError()) {
-<div  class="bg-red-100 text-red-800 p-2 rounded">
-  {{ this.cartService.stockError() }}
-</div>
-}@else {
-  
-}
+</tfoot>
+      </table>
+    </div>
 
-<div class="pagination-controls">
-  <button (click)="cartService.pagination.prevPage()" [disabled]="this.cartService.pagination.currentPage() === 1">
-    Anterior
-  </button>
-@for (page of cartService.pagination.pageNumbers(); track page) {
-  <button
-    (click)="cartService.pagination.goToPage(page)"
-    [class.active]="cartService.pagination.currentPage() === page">
-    {{ page }}
-  </button>
-}
+    <div class="save-row">
+      <div class="pagination-kodoti">
+        <button (click)="cartService.pagination.prevPage()" [disabled]="this.cartService.pagination.currentPage() === 1">Anterior</button>
+        @for (page of cartService.pagination.pageNumbers(); track page) {
+        <button (click)="cartService.pagination.goToPage(page)" [class.active]="cartService.pagination.currentPage() === page">
+            {{ page }}
+        </button>
+        }
+        <button (click)="cartService.pagination.nextPage()" [disabled]="cartService.pagination.currentPage() === cartService.pagination.totalPages()">Siguiente</button>
+      </div>
+      <button class="btn-kodoti btn-teal" style="padding:0.7rem 1.8rem;"  (click)="save()">Guardar Orden</button>
+    </div>
 
-  <button (click)="cartService.pagination.nextPage()" [disabled]="cartService.pagination.currentPage() === cartService.pagination.totalPages()">
-    Siguiente
-  </button>
-</div>
-
-
-
-
-
-
-  <button
-      class="btn btn-success btn-lg"
-      (click)="save()"
-      [disabled]="!carrito().items.length"
-    >
-      Guardar Orden
-    </button>
-
-  @if (cartService.stockError()) {
-    <div  class="error-msg">
-    {{ cartService.stockError() }}
   </div>
-  }
+</div>
+@if (this.cartService.stockError()) {
+  <div class="alert-kodoti">
+    {{ this.cartService.stockError() }}
+  </div>
+}

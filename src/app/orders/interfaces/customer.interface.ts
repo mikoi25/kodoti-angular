@@ -1,13 +1,19 @@
 
 export interface Customer {
   hasItems: boolean;
-  items:    CustomerItem[];
-  total:    number;
-  page:     number;
-  pages:    number;
+  items: CustomerItem[];
+  total: number;
+  page: number;
+  pages: number;
 }
 
 export interface CustomerItem {
   clientId: number;
-  name:     string;
+  name :string;
+
+}
+
+export interface CustomerCreationItem {
+  name:string;
+
 }
