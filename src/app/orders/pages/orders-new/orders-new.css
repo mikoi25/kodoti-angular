@@ -1,0 +1,124 @@
+  .page-head{ padding:2.5rem 0 1.5rem; }
+  .page-head h1{ font-size:2rem; font-weight:700; }
+
+  .form-row{
+    display:flex;
+    gap:1.5rem;
+    flex-wrap:wrap;
+    margin-bottom:1.5rem;
+  }
+  .form-row .field{ flex:1; min-width:220px; }
+
+  .product-row{
+    display:flex;
+    gap:0.75rem;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    margin-bottom:1.75rem;
+    padding-bottom:1.5rem;
+    border-bottom:1px dashed var(--line);
+  }
+  .product-row .field{ flex:1; min-width:220px; margin-bottom:0; }
+  .product-row .actions{ display:flex; gap:0.6rem; }
+
+  .items-count{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    color:var(--muted);
+    margin-bottom:1rem;
+  }
+
+  .empty-cart{
+    text-align:center;
+    padding:2.5rem 0;
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.9rem;
+  }
+
+  /* .table-total-row td{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:1.05rem;
+    border-top:2px solid var(--ink) !important;
+    border-bottom:none !important;
+  } */
+
+  .table-total-row td{
+  padding:0.85rem 0.6rem;        /* faltaba: por eso se pegaban las celdas */
+  font-family:'JetBrains Mono', monospace;
+  font-weight:700;
+  font-size:1.05rem;
+  border-top:2px solid var(--ink) !important;
+  border-bottom:none !important;
+}
+.table-total-row .total-value{ color:var(--teal); }
+
+  .save-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:1rem;
+    margin-top:1.75rem;
+  }
+
+
+/* ---------- ALERTA DE ERROR (stock, validaciones, etc.) ---------- */
+.alert-kodoti{
+  display:flex;
+  align-items:center;
+  gap:0.6rem;
+  background:var(--brick-soft);
+  color:var(--brick);
+  border:1px solid var(--brick);
+  border-radius:8px;
+  padding:0.75rem 1rem;
+  font-family:'Inter', sans-serif;
+  font-size:0.9rem;
+  margin-top:1rem;
+}
+.alert-kodoti::before{
+  content:"⚠";
+  font-size:1rem;
+  line-height:1;
+}
+
+
+
+
+  /* ---------- STEPPER DE CANTIDAD (carritos, cuotas, etc.) ---------- */
+.qty-stepper{
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+}
+.qty-stepper button{
+  width:24px; height:24px;
+  border-radius:5px;
+  border:1px solid var(--line);
+  background:var(--surface-2);
+  color:var(--ink);
+  font-size:0.85rem;
+  line-height:1;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s ease;
+}
+.qty-stepper button:hover{ background:var(--teal); border-color:var(--teal); color:#0D1211; }
+.qty-stepper .qty-value{ font-family:'JetBrains Mono', monospace; min-width:18px; text-align:center; }
+
+
+/* ---------- BOTÓN DE ELIMINAR FILA (carritos, listas editables) ---------- */
+.remove-btn{
+  width:26px; height:26px;
+  border-radius:6px;
+  background:var(--brick-soft);
+  color:var(--brick);
+  border:none;
+  font-size:0.8rem;
+  font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  transition:all .15s ease;
+}
+.remove-btn:hover{ background:var(--brick); color:#fff; }

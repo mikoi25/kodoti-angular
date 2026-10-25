@@ -1,1 +1,45 @@
 <p>auth-login works!</p>
+
+
+
+<section class="login-page">
+  <div class="motif-a"></div>
+  <div class="motif-b"></div>
+
+  <div class="login-card card-kodoti">
+    <div class="login-brand">
+      <div class="kodoti-mark">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="0,0 18,0 0,40" fill="#2E9179"/>
+          <polygon points="18,0 40,20 18,40 32,20" fill="#EAEFEC"/>
+        </svg>
+      </div>
+      <span class="wordmark">KODOTI</span>
+      <span class="module-tag">Módulo de Préstamos</span>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label class="form-label-kodoti" for="email">E-mail</label>
+        <input type="email" class="form-control-kodoti" placeholder="nombre@empresa.com" formControlName="email" required>
+             @if ( formUtils.isValidField(loginForm, 'email')) {
+            <span class="form-text text-danger">
+              <!-- El valor ingresado no parece un correo electrónico -->
+              {{ formUtils.getFieldError(loginForm, "email") }}
+            </span>
+            }
+      </div>
+      <div class="field">
+        <label class="form-label-kodoti" for="password">Contraseña</label>
+        <input type="password"  class="form-control-kodoti" placeholder="••••••••" formControlName="password" required>
+             @if ( formUtils.isValidField(loginForm, 'password')) {
+            <span class="form-text text-danger">
+              <!-- El valor ingresado no parece un correo electrónico -->
+              {{ formUtils.getFieldError(loginForm, "password") }}
+            </span>
+            }
+      </div>
+      <button type="submit" class="btn-kodoti btn-teal" >Entrar</button>
+    </form>
+  </div>
+</section>

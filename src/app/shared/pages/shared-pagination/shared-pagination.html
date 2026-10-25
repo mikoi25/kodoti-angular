@@ -1,0 +1,9 @@
+ <div class="pagination-kodoti">
+      <button [disabled]="currentPage() === 1" (click)="pageChange.emit('first')">Primero</button>
+      <button [disabled]="currentPage() === 1" (click)="pageChange.emit('prev')">Anterior</button>
+      @for (p of pages(); track p) {
+        <button [class.active]="p === currentPage()" (click)="pageChange.emit(p)">{{ p }}</button>
+      }
+      <button [disabled]="currentPage() === totalPages()" (click)="pageChange.emit('next')">Siguiente</button>
+      <button [disabled]="currentPage() === totalPages()" (click)="pageChange.emit('last')">Último</button>
+    </div>

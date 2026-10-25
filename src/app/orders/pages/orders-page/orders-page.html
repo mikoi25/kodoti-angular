@@ -1,1 +1,56 @@
-<p>orders-page works!</p>
+<!-- NAVBAR -->
+<nav class="kodoti-nav">
+  <div class="container d-flex justify-content-between align-items-center py-3">
+    <div class="d-flex align-items-center">
+      <button class="nav-toggle" (click)="openSidebar()" title="Menú">☰</button>
+      <a routerLink="/prestamos" class="kodoti-brand">
+        <div class="kodoti-mark">
+          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="0,0 18,0 0,40" fill="#2E9179"/>
+            <polygon points="18,0 40,20 18,40 32,20" fill="#EAEFEC"/>
+          </svg>
+        </div>
+        <span class="wordmark">KODOTI</span>
+      </a>
+    </div>
+    <div class="d-flex align-items-center">
+      <a routerLink="/orders/list" class="nav-link">Órdenes</a>   
+     <!-- <a routerLink="/customers" class="nav-link">Clientes</a> -->
+      <button class="btn-logout" (click)="logout()">Desconectarse</button>
+    </div>
+  </div>
+</nav>
+
+<!-- SIDEBAR -->
+<div class="kodoti-sidebar-backdrop" [class.open]="sidebarOpen()" (click)="closeSidebar()"></div>
+<aside class="kodoti-sidebar" [class.open]="sidebarOpen()">
+  <div class="sidebar-head">
+    <a routerLink="/prestamo" class="kodoti-brand" (click)="closeSidebar()">
+      <div class="kodoti-mark">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="0,0 18,0 0,40" fill="#2E9179"/>
+          <polygon points="18,0 40,20 18,40 32,20" fill="#EAEFEC"/>
+        </svg>
+      </div>
+      <span class="wordmark">KODOTI</span>
+    </a>
+    <button class="modal-close" (click)="closeSidebar()">×</button>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#" class="sidebar-link" (click)="closeSidebar()">🧾 Órdenes</a>
+    <a routerLink="/orders/list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+       class="sidebar-link" (click)="closeSidebar()">💲 Lista de Orders</a>
+    <a routerLink="/orders/new" routerLinkActive="active" class="sidebar-link" (click)="closeSidebar()">➕ Nuevo Orders</a>
+  </nav>
+  <div class="sidebar-foot">
+    <button class="btn-logout" (click)="logout()">Desconectarse</button>
+  </div>
+</aside>
+
+<div class="container">
+  <router-outlet />
+</div>
+
+<footer class="kodoti-footer">
+  <span>{{ clock() }}</span> · <a href="#">KODOTI</a> — Aprende más haciendo pequeños proyectos
+</footer>
